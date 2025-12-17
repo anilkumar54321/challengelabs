@@ -66,6 +66,12 @@ jobs:
         with:
           project_id: ${{ vars.GCP_PROJECT_ID }}
 
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.4
+
+
       - name: Initialize terraform 🎬
         working-directory: ./src/terraform
         shell: sh
