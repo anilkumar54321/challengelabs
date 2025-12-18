@@ -65,6 +65,16 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ vars.GCP_PROJECT_ID }}
+      - name: Display gcloud auth status
+        run: |
+          echo "=== gcloud auth list ==="
+          gcloud auth list --format="table(account, status)"
+          echo ""
+          echo "=== gcloud config list ==="
+          gcloud config list
+          echo ""
+          echo "=== gcloud projects list ==="
+          gcloud projects list --limit=10
 
       - name: Setup Terraform CLI
         uses: hashicorp/setup-terraform@v3
