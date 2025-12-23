@@ -1,6 +1,10 @@
 name: Create and/or Update Infrastructure
 
 on:
+  push:
+      branches:
+        - main
+        - ft/test
   workflow_dispatch:
 
 # We don't want parallel deployments.
@@ -89,11 +93,6 @@ jobs:
           # Uses local backend (default) – state stays in workspace
           terraform init -input=false
 
-        env:
-          GIT_SSH_COMMAND: "echo '${{ secrets.GH_SSH_PRIVATE_KEY }}' > id_rsa
-            && ssh-keyscan github.com > known_hosts
-            && chmod 600 id_rsa known_hosts
-            && ssh -i ./id_rsa -o UserKnownHostsFile=./known_hosts"
 
       - name: Validate terraform files 🔍
         working-directory: ./src/terraform
