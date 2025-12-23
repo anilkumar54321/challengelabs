@@ -1,10 +1,6 @@
 name: Create and/or Update Infrastructure
 
 on:
-  push:
-      branches:
-        - main
-        - ft/test
   workflow_dispatch:
 
 # We don't want parallel deployments.
