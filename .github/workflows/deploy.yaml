@@ -56,20 +56,31 @@ jobs:
 
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
-          workload_identity_provider: 'projects/507596794102/locations/global/workloadIdentityPools/cicd-github-actions/providers/cicd-github-actions'
-          service_account: "github-action@project-f8951ee2-0f63-4239-9c6.iam.gserviceaccount.com"
+          workload_identity_provider: 'projects/507596794102/locations/global/workloadIdentityPools/pool-github/providers/pool-github'
+          service_account: 'github-action@project-f8951ee2-0f63-4239-9c6.iam.gserviceaccount.com'
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
         with:
           project_id: ${{ vars.GCP_PROJECT_ID }}
+      - name: Display gcloud auth status
+        run: |
+          echo "=== gcloud auth list ==="
+          gcloud auth list --format="table(account, status)"
+          echo ""
+          echo "=== gcloud config list ==="
+          gcloud config list
+          echo ""
+          echo "=== gcloud projects list ==="
+          gcloud projects list --limit=10
 
       - name: Setup Terraform CLI
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.4
+
 
       - name: Initialize terraform 🎬
         working-directory: ./src/terraform
