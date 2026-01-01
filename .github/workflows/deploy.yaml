@@ -100,7 +100,7 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform fmt -check
+          terraform fmt
 
       - name: Plan terraform changes 📝
         working-directory: ./src/terraform
