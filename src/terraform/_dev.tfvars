@@ -13,8 +13,4 @@ service_accounts = {
     account_id   = "test-sa-from-terraform-2"
     display_name = "sa-from-tf-2"
   }
-  sa3 = {
-    account_id   = "test-sa-from-terraform-3"
-    display_name = "sa-from-tf-3"
-  }
 }
