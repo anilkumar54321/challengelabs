@@ -1,6 +1,6 @@
 ########## COMMON INPUTS ############
 main = {
-  project = "project-f8951ee2-0f63-4239-9c6"
+  project = "ck7674"
   region  = "europe-west1"
   zone    = "europe-west1-c"
 }
