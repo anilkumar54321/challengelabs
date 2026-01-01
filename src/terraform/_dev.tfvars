@@ -9,8 +9,4 @@ service_accounts = {
     account_id   = "test-sa-from-terraform-1"
     display_name = "sa-from-tf-1"
   }
-  sa2 = {
-    account_id   = "test-sa-from-terraform-2"
-    display_name = "sa-from-tf-2"
-  }
 }
