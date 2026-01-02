@@ -99,4 +99,4 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform apply -auto-approve plan.tfplan
+          terraform destroy -auto-approve plan.tfplan
