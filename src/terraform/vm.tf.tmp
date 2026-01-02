@@ -14,6 +14,7 @@ resource "google_compute_instance" "vminstance" {
   }
   network_interface {
     network = google_compute_network.network["vpc1"].name
+    subnetwork = google_compute_subnetwork.subnetwork["subnet_1"].name
   }
   allow_stopping_for_update = each.value.allow_stopping_for_update
   depends_on = [
