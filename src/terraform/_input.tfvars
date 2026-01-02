@@ -51,7 +51,6 @@ vms = {
   vm1 = {
     name         = "lumen-test-vm-1"
     machine_type = "e2-medium"
-    zone         = "us-central1-a"
     image        = "debian-cloud/debian-11"
     size         = 50
     labels = {
