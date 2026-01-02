@@ -19,7 +19,6 @@ subnetworks = {
   subnet_1 = {
     subnet_name              = "lumen-subnet"
     subnet_ip                = "10.0.1.0/24"
-    subnet_region            = "us-central1"
     private_ip_google_access = true
   }
 }
