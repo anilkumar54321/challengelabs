@@ -1,0 +1,116 @@
+name: Create and/or Update Infrastructure
+
+on:
+  workflow_dispatch:
+
+# We don't want parallel deployments.
+concurrency: develop
+
+env:
+  VALIDATOR_VERSION: "0.9.1"
+
+jobs:
+  extract-environment-name:
+    name: Extract environment name
+    env:
+      ENV_NAME: ""
+      TFVARS_FILE: ""
+      TF_ALWAYS_DEV: "true"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env vars
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "main" ]] || [[ "${GITHUB_REF_NAME}" == "master" ]]
+          then
+            echo "Prod Environment"
+            echo "ENV_NAME=prod" >> $GITHUB_ENV
+            echo "TFVARS_FILE=_prod.tfvars" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF_NAME}" == "integration" ]]
+          then
+            echo "Test Environment"
+            echo "ENV_NAME=test" >> $GITHUB_ENV
+            echo "TFVARS_FILE=_test.tfvars" >> $GITHUB_ENV
+          else [[ "${TF_ALWAYS_DEV}" == "true" ]] || [[ "${GITHUB_REF_NAME}" == "develop" ]] || [[ "${GITHUB_REF_NAME}" == "development" ]]
+            echo "Dev Environment"
+            echo "ENV_NAME=dev" >> $GITHUB_ENV
+            echo "TFVARS_FILE=_dev.tfvars" >> $GITHUB_ENV
+          fi
+    outputs:
+      environment: ${{ env.ENV_NAME }}
+      tfvars: ${{ env.TFVARS_FILE }}
+
+  deploy:
+    permissions:
+      contents: read
+      id-token: write
+
+    name: Deployment
+    needs:
+      - extract-environment-name
+    environment: ${{ needs.extract-environment-name.outputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull code into container 📋
+        uses: actions/checkout@v4
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: 'projects/338491707254/locations/global/workloadIdentityPools/cicd-github-actions/providers/pool-github'
+          service_account: 'github-action@ck7674.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+      - name: Display gcloud auth status
+        run: |
+          echo "=== gcloud auth list ==="
+          gcloud auth list --format="table(account, status)"
+          echo ""
+          echo "=== gcloud config list ==="
+          gcloud config list
+          echo ""
+          echo "=== gcloud projects list ==="
+          gcloud projects list --limit=10
+
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.4
+
+
+      - name: Initialize terraform 🎬
+        working-directory: ./src/terraform
+        shell: sh
+        run: |
+          # Uses local backend (default) – state stays in workspace
+          terraform init -input=false
+
+
+      - name: Validate terraform files 🔍
+        working-directory: ./src/terraform
+        shell: sh
+        run: |
+          terraform validate
+
+      - name: Check format of terraform files 🔍
+        working-directory: ./src/terraform
+        shell: sh
+        run: |
+          terraform fmt
+
+      - name: Plan terraform changes 📝
+        working-directory: ./src/terraform
+        shell: sh
+        run: |
+          terraform plan -var-file=${{ needs.extract-environment-name.outputs.tfvars }} -out=plan.tfplan
+
+      - name: Apply terraform changes 🌳
+        if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+        working-directory: ./src/terraform
+        shell: sh
+        run: |
+          terraform apply -auto-approve plan.tfplan
