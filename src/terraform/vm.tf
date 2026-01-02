@@ -3,6 +3,8 @@ resource "google_compute_instance" "vminstance" {
   name         = each.value.name
   machine_type = each.value.machine_type
   zone         = var.main.zone
+  deletion_protection = false
+  subnetwork = "lumen-subnet"
   boot_disk {
     initialize_params {
       image  = each.value.image
