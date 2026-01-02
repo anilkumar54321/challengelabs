@@ -15,26 +15,12 @@ jobs:
     env:
       ENV_NAME: ""
       TFVARS_FILE: ""
-      TF_ALWAYS_DEV: "true"
     runs-on: ubuntu-latest
     steps:
       - name: Set env vars
         run: |
-          if [[ "${GITHUB_REF_NAME}" == "main" ]] || [[ "${GITHUB_REF_NAME}" == "master" ]]
-          then
-            echo "Prod Environment"
-            echo "ENV_NAME=prod" >> $GITHUB_ENV
-            echo "TFVARS_FILE=_prod.tfvars" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF_NAME}" == "integration" ]]
-          then
-            echo "Test Environment"
-            echo "ENV_NAME=test" >> $GITHUB_ENV
-            echo "TFVARS_FILE=_test.tfvars" >> $GITHUB_ENV
-          else [[ "${TF_ALWAYS_DEV}" == "true" ]] || [[ "${GITHUB_REF_NAME}" == "develop" ]] || [[ "${GITHUB_REF_NAME}" == "development" ]]
-            echo "Dev Environment"
-            echo "ENV_NAME=dev" >> $GITHUB_ENV
-            echo "TFVARS_FILE=_dev.tfvars" >> $GITHUB_ENV
-          fi
+            echo "ENV_NAME=nprod" >> $GITHUB_ENV
+            echo "TFVARS_FILE=_input.tfvars" >> $GITHUB_ENV
     outputs:
       environment: ${{ env.ENV_NAME }}
       tfvars: ${{ env.TFVARS_FILE }}
