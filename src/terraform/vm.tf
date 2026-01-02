@@ -2,7 +2,7 @@ resource "google_compute_instance" "vminstance" {
   for_each     = var.vms
   name         = each.value.name
   machine_type = each.value.machine_type
-  zone         = each.value.zone
+  zone         = var.main.zone
   boot_disk {
     initialize_params {
       image  = each.value.image
