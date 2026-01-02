@@ -1,5 +1,0 @@
-https://partner.cloudskillsboost.google/focuses/56590?parent=catalog
-
-run this command after uploadinng these 2 files in cloud shell and wait for dataflow job to complete approx 11 mins
-sudo chmod +x quicklabgsp381.sh
-./quicklabgsp381.sh
