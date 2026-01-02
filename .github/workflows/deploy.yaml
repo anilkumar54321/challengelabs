@@ -33,7 +33,7 @@ jobs:
           else [[ "${TF_ALWAYS_DEV}" == "true" ]] || [[ "${GITHUB_REF_NAME}" == "develop" ]] || [[ "${GITHUB_REF_NAME}" == "development" ]]
             echo "Dev Environment"
             echo "ENV_NAME=dev" >> $GITHUB_ENV
-            echo "TFVARS_FILE=_dev.tfvars" >> $GITHUB_ENV
+            echo "TFVARS_FILE=_input.tfvars" >> $GITHUB_ENV
           fi
     outputs:
       environment: ${{ env.ENV_NAME }}
