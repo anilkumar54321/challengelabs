@@ -7,7 +7,7 @@ main = {
 
 #################### VPC Inputs #######################
 networks = {
-  vpc1 = {         
+  vpc1 = {
     network_name            = "vpc-lumen-network"
     routing_mode            = "REGIONAL"
     description             = "VPC for lumen"
