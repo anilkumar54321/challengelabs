@@ -1,24 +1,17 @@
-resource "google_compute_instance" "vminstance" {
-  for_each     = var.vms
-  name         = each.value.name
-  machine_type = each.value.machine_type
-  zone         = var.main.zone
-  deletion_protection = false
-  boot_disk {
-    initialize_params {
-      image  = each.value.image
-      size   = each.value.size
-      type   = each.value.type
-      labels = each.value.labels
-    }
-  }
-  network_interface {
-    network    = google_compute_network.network["vpc1"].name
-    subnetwork = google_compute_subnetwork.subnetwork["subnet_1"].name
-  }
+module "vm" {
+  source                    = "../modules/vm"
+  for_each                  = var.vms
+  name                      = each.value.name
+  zone                      = var.main.zone
+  machine_type              = each.value.machine_type
+  image                     = each.value.image
+  size                      = each.value.size
+  labels                    = each.value.labels
+  tags                      = each.value.tags
+  type                      = each.value.type
   allow_stopping_for_update = each.value.allow_stopping_for_update
-  depends_on = [
-    google_compute_network.network,
-    google_compute_subnetwork.subnetwork
-  ]
+  network                   = module.vpc["vpc1"].network_name
+  subnetwork                = module.subnets["subnet_1"].subnet
+
+  depends_on = [module.vpc.networks, module.subnets.subnetworks]
 }

@@ -53,6 +53,9 @@ vms = {
     machine_type = "e2-medium"
     image        = "debian-cloud/debian-11"
     size         = 50
+    tags = [
+      "allow-ssh"
+    ]
     labels = {
       "env" = "nprod"
     }

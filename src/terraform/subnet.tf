@@ -1,11 +1,11 @@
-resource "google_compute_subnetwork" "subnetwork" {
+module "subnets" {
+  source                   = "../modules/subnets"
   for_each                 = var.subnetworks
-  name                     = each.value.subnet_name
-  ip_cidr_range            = each.value.subnet_ip
-  region                   = var.main.region
+  subnet_name              = each.value.subnet_name
+  subnet_ip                = each.value.subnet_ip
   private_ip_google_access = each.value.private_ip_google_access
-  network                  = google_compute_network.network["vpc1"].name
+  network                  = module.vpc["vpc1"].network_name
+  region                   = var.main.region
   depends_on = [
-    google_compute_network.network
-  ]
+  module.vpc.networks]
 }
