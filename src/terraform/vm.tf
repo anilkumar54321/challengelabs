@@ -12,6 +12,5 @@ module "vm" {
   allow_stopping_for_update = each.value.allow_stopping_for_update
   network                   = module.vpc["vpc1"].network_name
   subnetwork                = module.subnets["subnet_1"].subnet
-
-  depends_on = [module.vpc.networks, module.subnets.subnetworks]
+  depends_on = [module.vpc.networks, module.subnets.subnetworks, module.cloud_nat.cloud_nats]
 }
