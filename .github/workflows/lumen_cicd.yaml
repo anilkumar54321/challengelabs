@@ -69,7 +69,7 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform init -input=false
+          terraform init
 
 
       - name: Validate terraform files 🔍
@@ -88,12 +88,12 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform plan
+          terraform plan -out=plan.tfplan
 
       - name: Apply terraform changes 🌳
         if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform apply -auto-approve
+          terraform apply -auto-approve plan.tfplan
 
