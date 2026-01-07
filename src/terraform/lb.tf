@@ -19,7 +19,7 @@ module "load_balancer" {
   ip_protocol = each.value.ip_protocol
   load_balancing_scheme = each.value.load_balancing_scheme
   port_range = each.value.port_range
-  depends_on = [module.vpc.networks, module.subnets.subnetworks, module.cloud_nat.cloud_nats]
+  depends_on = [module.vpc.networks, module.subnets.subnetworks, module.cloud_nat.cloud_nats,module.vm]
 }
 
 output "lb_ip" {

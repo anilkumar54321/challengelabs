@@ -8,5 +8,6 @@ variable "vms" {
     type                      = string
     allow_stopping_for_update = bool
     tags                      = list(string)
+    metadata_startup_script   = string
   }))
 }

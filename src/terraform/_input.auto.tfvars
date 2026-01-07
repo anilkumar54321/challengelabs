@@ -63,6 +63,13 @@ vms = {
     }
     type                      = "pd-standard"
     allow_stopping_for_update = true
+    metadata_startup_script   = <<-EOF
+  #!/bin/bash
+  apt-get update -qq
+  apt-get install -y nginx
+  systemct1 restart nginx
+  echo "<h1> Hello this is private vm server from Lumen </h1>" > /var/www/html/index.html
+  EOF
   }
 }
 

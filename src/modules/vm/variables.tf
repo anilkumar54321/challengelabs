@@ -32,3 +32,6 @@ variable "tags" {
 variable "zone" {
   type = string
 }
+variable "metadata_startup_script" {
+  type = string
+}

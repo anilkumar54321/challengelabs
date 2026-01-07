@@ -17,11 +17,5 @@ resource "google_compute_instance" "vminstance" {
     subnetwork = var.subnetwork
   }
   allow_stopping_for_update = var.allow_stopping_for_update
-  metadata_startup_script = <<-EOF
-  #!/bin/bash
-  apt-get update -qq
-  apt-get install -y nginx
-  systemct1 restart nginx
-  echo "<h1> Hello this is private vm server from Lumen </h1>" > /var/www/html/index.html
-  EOF
+  metadata_startup_script = var.metadata_startup_script
 }
