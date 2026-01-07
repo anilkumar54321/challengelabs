@@ -92,11 +92,11 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform plan -var-file=${{ needs.extract-environment-name.outputs.tfvars }} -out=plan.tfplan
+          terraform plan
 
       - name: Apply terraform changes 🌳
         if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
         working-directory: ./src/terraform
         shell: sh
         run: |
-          terraform apply -auto-approve plan.tfplan
+          terraform apply -auto-approve
