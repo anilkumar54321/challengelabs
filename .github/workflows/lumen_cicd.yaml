@@ -69,7 +69,6 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          # Uses local backend (default) – state stays in workspace
           terraform init -input=false
 
 
@@ -89,8 +88,6 @@ jobs:
         working-directory: ./src/terraform
         shell: sh
         run: |
-          # Terraform will automatically load terraform.tfvars and any *.auto.tfvars files.
-          # No need to specify -var-file here.
           terraform plan -out=plan.tfplan
 
       - name: Apply terraform changes 🌳
