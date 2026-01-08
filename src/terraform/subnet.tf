@@ -1,6 +1,6 @@
 module "subnets" {
   source                   = "../modules/subnets"
-  for_each                 = var.subnetworks
+  for_each                 = local.subnetworks
   subnet_name              = each.value.subnet_name
   subnet_ip                = each.value.subnet_ip
   private_ip_google_access = each.value.private_ip_google_access
