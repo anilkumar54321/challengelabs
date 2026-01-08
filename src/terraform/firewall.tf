@@ -1,6 +1,6 @@
 module "firewalls" {
   source        = "../modules/firewalls"
-  for_each      = var.firewall_rules
+  for_each      = local.firewall_rules
   name          = each.value.name
   direction     = each.value.direction
   source_ranges = each.value.source_ranges
